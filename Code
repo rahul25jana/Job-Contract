@@ -1,0 +1,36 @@
+package samplep;
+import java.sql.*;
+import javax.swing.JOptionPane;
+
+public class assign6test {
+    public static void main(String[] args)throws ClassNotFoundException, SQLException {
+       int sectionid;
+    // String studentid;
+      String grade;
+     int count =0;       
+        System.out.println("Setting connection to database...");
+        Class.forName("oracle.jdbc.OracleDriver");
+        Connection c = DriverManager.getConnection("jdbc:oracle:thin:@140.192.30.237:1521:def",
+        "rjanardh", "cdm1837329");    ///// Change password as you said.. 
+        PreparedStatement p = c.prepareStatement("Insert into student values (?) ");
+        sectionid =Integer.parseInt(JOptionPane.showInputDialog("Enter number:"));
+      System.out.println("Got " + sectionid );
+            p.setInt(1, sectionid);
+             System.out.println("Success!");
+             Statement s=c.createStatement();
+             System.out.println("Check Results");
+            ResultSet r;
+           // r=s.executeQuery("select count, count(*) from grading where sectionid='" + sectionid + "' group by grade");
+            r=s.executeQuery("select case when grouping(grade) = 1 then 'Total grades:'else grade end as grade, count(grade) from grading where SECTIONID='" + sectionid + "' group by rollup(grade) union select grade, 0 from grading where grade not in (select grade from grading where SECTIONID='" +sectionid +"')");         
+           while(r.next())
+           {
+           grade = r.getString(1);
+           sectionid = r.getInt(2);
+           count ++;
+               System.out.println(grade + " " + sectionid);
+           
+           }
+                          
+    c.close();
+       }
+}
