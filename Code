@@ -11,7 +11,7 @@ public class assign6test {
         System.out.println("Setting connection to database...");
         Class.forName("oracle.jdbc.OracleDriver");
         Connection c = DriverManager.getConnection("jdbc:oracle:thin:@140.192.30.237:1521:def",
-        "rjanardh", "cdm1837329");    ///// Change password as you said.. 
+        "rjanardh", "*****");    ///// Change password as you said.. 
         PreparedStatement p = c.prepareStatement("Insert into student values (?) ");
         sectionid =Integer.parseInt(JOptionPane.showInputDialog("Enter number:"));
       System.out.println("Got " + sectionid );
